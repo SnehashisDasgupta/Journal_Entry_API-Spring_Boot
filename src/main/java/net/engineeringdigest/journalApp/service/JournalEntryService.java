@@ -28,6 +28,10 @@ public class JournalEntryService {
         user.getJournalEntries().add(saved); // Add the saved journal entry to the user's list of journal entries
         userService.saveEntry(user); // Save the  user (with the new journal entry)
     }
+    // Overloaded method
+    public void saveEntry(JournalEntry journalEntry) {
+        journalEntryRepository.save(journalEntry); // Save the journal entry in journal entry repository
+    }
 
     public List<JournalEntry> getAll() {
         return journalEntryRepository.findAll();
@@ -37,7 +41,10 @@ public class JournalEntryService {
         return journalEntryRepository.findById(id);
     }
 
-    public void deleteById(ObjectId id) {
+    public void deleteById(String username, ObjectId id) {
+        User user = userService.findByUsername(username);
+        user.getJournalEntries().removeIf(entry -> entry.getId().equals(id)); // Remove the journal entry from the user's list
+        userService.saveEntry(user); // Save the user (with the updated journal entries)
         journalEntryRepository.deleteById(id);
     }
 }

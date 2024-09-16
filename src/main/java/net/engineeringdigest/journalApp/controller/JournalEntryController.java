@@ -44,37 +44,38 @@ public class JournalEntryController {
         }
     }
 
-    @GetMapping("id/{myId}")
-    public ResponseEntity<JournalEntry> getJournalEntryById(@PathVariable ObjectId myId) {
-        Optional<JournalEntry> journalEntry = journalEntryService.findById(myId);
+    @GetMapping("id/{id}")
+    public ResponseEntity<JournalEntry> getJournalEntryById(@PathVariable ObjectId id) {
+        Optional<JournalEntry> journalEntry = journalEntryService.findById(id);
         if (journalEntry.isPresent()) {
             return new ResponseEntity<>(journalEntry.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("id/{myId}")
-    public ResponseEntity<?> deleteJournalEntry(@PathVariable ObjectId myId) {
-        journalEntryService.deleteById(myId);
-        return new ResponseEntity<>("Journal entry deleted successfully",HttpStatus.NO_CONTENT);
+    @DeleteMapping("id/{username}/{id}")
+    public ResponseEntity<String> deleteJournalEntry(@PathVariable String username,@PathVariable ObjectId id) {
+        if (!journalEntryService.findById(id).isPresent()) {
+            return new ResponseEntity<>("Journal entry doesn't exist", HttpStatus.NOT_FOUND);
+        }
+
+        journalEntryService.deleteById(username, id); // delete journal entry from JournalEntry entity
+        return new ResponseEntity<>("Journal entry deleted successfully",HttpStatus.OK);
     }
 
-    @PutMapping("id/{myId}")
-    public ResponseEntity<String> updateJournalEntryById(@PathVariable ObjectId myId, @RequestBody JournalEntry givenEntry) {
+    @PutMapping("id/{username}/{id}")
+    public ResponseEntity<String> updateJournalEntryById(@PathVariable String username, @PathVariable ObjectId id, @RequestBody JournalEntry givenEntry) {
         try {
-            JournalEntry existingEntry = journalEntryService.findById(myId).orElse(null);
+            JournalEntry existingEntry = journalEntryService.findById(id).orElse(null);
             if (existingEntry == null) return new ResponseEntity<>("Journal Entry not found", HttpStatus.NOT_FOUND);
 
-            // if both 'title' and 'content' fields are not given show 'BAD_REQUEST'
-            if (givenEntry.getTitle()==null && givenEntry.getContent()==null) return new ResponseEntity<>("Enter a field to update the journal entry", HttpStatus.NOT_ACCEPTABLE);
-
             // Updating only non-null & non-empty fields from the given entry
-            if (givenEntry.getTitle() != null && !givenEntry.getTitle().isEmpty())
+            if (!givenEntry.getTitle().isEmpty())
                 existingEntry.setTitle(givenEntry.getTitle());
             if (givenEntry.getContent() != null && !givenEntry.getContent().isEmpty())
                 existingEntry.setContent(givenEntry.getContent());
 
-//            journalEntryService.saveEntry(existingEntry);
+            journalEntryService.saveEntry(existingEntry);
             return new ResponseEntity<>("Journal entry updated successfully", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error occurred while updating journal entry: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
