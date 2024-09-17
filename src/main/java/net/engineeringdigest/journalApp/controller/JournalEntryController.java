@@ -26,6 +26,7 @@ public class JournalEntryController {
     @GetMapping("{username}")
     public ResponseEntity<?> getAllJournalEntriesOfUser(@PathVariable String username) {
         User user = userService.findByUsername(username);
+        // get all journal entries of given user and store in allUserEntries
         List<JournalEntry> allUserEntries = user.getJournalEntries();
         if (allUserEntries != null && !allUserEntries.isEmpty()){
             return new ResponseEntity<>(allUserEntries, HttpStatus.OK);
@@ -58,8 +59,8 @@ public class JournalEntryController {
         if (!journalEntryService.findById(id).isPresent()) {
             return new ResponseEntity<>("Journal entry doesn't exist", HttpStatus.NOT_FOUND);
         }
-
-        journalEntryService.deleteById(username, id); // delete journal entry from JournalEntry entity
+        // delete journal entry from JournalEntry entity
+        journalEntryService.deleteById(username, id);
         return new ResponseEntity<>("Journal entry deleted successfully",HttpStatus.OK);
     }
 
