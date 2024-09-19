@@ -1,7 +1,7 @@
-package net.engineeringdigest.journalApp.service;
+package net.journalApp.service;
 
-import net.engineeringdigest.journalApp.entity.User;
-import net.engineeringdigest.journalApp.repository.UserRepository;
+import net.journalApp.entity.User;
+import net.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,7 +29,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void saveEntry(User user) {
+    public void saveUser(User user) {
         userRepository.save(user);
     }
 

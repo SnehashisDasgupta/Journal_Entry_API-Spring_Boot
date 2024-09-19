@@ -1,8 +1,8 @@
-package net.engineeringdigest.journalApp.service;
+package net.journalApp.service;
 
-import net.engineeringdigest.journalApp.entity.JournalEntry;
-import net.engineeringdigest.journalApp.entity.User;
-import net.engineeringdigest.journalApp.repository.JournalEntryRepository;
+import net.journalApp.entity.JournalEntry;
+import net.journalApp.entity.User;
+import net.journalApp.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ public class JournalEntryService {
             journalEntry.setDate(LocalDateTime.now()); // Set the current date for the journal entry
             JournalEntry saved = journalEntryRepository.save(journalEntry);// Save the journal entry in the database
             user.getJournalEntries().add(saved);// Add the saved journal entry to the user's list of journal entries
-            userService.saveEntry(user);// Save the user (with the new journal entry)
+            userService.saveUser(user);// Save the user (with the new journal entry)
 
         } catch (Exception e) {
             // Throw a runtime exception to ensure the transaction is rolled back
@@ -50,12 +50,23 @@ public class JournalEntryService {
         return journalEntryRepository.findById(id);
     }
 
+    @Transactional
     public void deleteById(String username, ObjectId id) {
-        User user = userService.findByUsername(username);
-        // Remove the journal entry from the user's list
-        user.getJournalEntries().removeIf(entry -> entry.getId().equals(id));
-        // Save the user (with the updated journal entries)
-        userService.saveEntry(user);
-        journalEntryRepository.deleteById(id);
+        try {
+            User user = userService.findByUsername(username);
+            // check if journal entry removed from user's journal entry list
+            boolean removed =  user.getJournalEntries().removeIf(entry -> entry.getId().equals(id));
+            if (removed) {
+                // Save the user (with the updated journal entries)
+                userService.saveUser(user);
+                journalEntryRepository.deleteById(id);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("An error occurred in deleteById API: ",e);
+        }
     }
+
+//    public List<JournalEntry> findByUsername (String username) {
+//
+//    }
 }
