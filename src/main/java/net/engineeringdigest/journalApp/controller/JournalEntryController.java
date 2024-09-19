@@ -40,8 +40,7 @@ public class JournalEntryController {
             journalEntryService.saveEntry(myEntry, username);
             return new ResponseEntity<>("Journal entry created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
-            System.out.println("Error in createEntry: " + e.getMessage());
-            return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error saving journal entry: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

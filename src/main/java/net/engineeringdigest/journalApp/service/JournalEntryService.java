@@ -24,16 +24,16 @@ public class JournalEntryService {
     @Transactional // [Atomicity] either all the steps will run or neither will run if one step is giving error
     public void saveEntry(JournalEntry journalEntry, String username) {
         try {
-            User user = userService.findByUsername(username);
-            journalEntry.setDate(LocalDateTime.now());
-            // save the journal entry in the database
-            JournalEntry saved = journalEntryRepository.save(journalEntry);
-            // Add the saved journal entry to the user's list of journal entries
-            user.getJournalEntries().add(saved);
-            // Save the  user (with the new journal entry)
-            userService.saveEntry(user);
+
+            User user = userService.findByUsername(username);// Retrieve the user by username
+            journalEntry.setDate(LocalDateTime.now()); // Set the current date for the journal entry
+            JournalEntry saved = journalEntryRepository.save(journalEntry);// Save the journal entry in the database
+            user.getJournalEntries().add(saved);// Add the saved journal entry to the user's list of journal entries
+            userService.saveEntry(user);// Save the user (with the new journal entry)
+
         } catch (Exception e) {
-            throw new RuntimeException("",e);
+            // Throw a runtime exception to ensure the transaction is rolled back
+            throw new RuntimeException("Error saving journal entry: ", e);
         }
     }
     // Overloaded method
