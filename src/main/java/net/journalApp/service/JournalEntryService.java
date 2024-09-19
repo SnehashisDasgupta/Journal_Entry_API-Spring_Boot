@@ -24,7 +24,6 @@ public class JournalEntryService {
     @Transactional // [Atomicity] either all the steps will run or neither will run if one step is giving error
     public void saveEntry(JournalEntry journalEntry, String username) {
         try {
-
             User user = userService.findByUsername(username);// Retrieve the user by username
             journalEntry.setDate(LocalDateTime.now()); // Set the current date for the journal entry
             JournalEntry saved = journalEntryRepository.save(journalEntry);// Save the journal entry in the database
@@ -32,7 +31,6 @@ public class JournalEntryService {
             userService.saveUser(user);// Save the user (with the new journal entry)
 
         } catch (Exception e) {
-            // Throw a runtime exception to ensure the transaction is rolled back
             throw new RuntimeException("Error saving journal entry: ", e);
         }
     }
@@ -65,8 +63,4 @@ public class JournalEntryService {
             throw new RuntimeException("An error occurred in deleteById API: ",e);
         }
     }
-
-//    public List<JournalEntry> findByUsername (String username) {
-//
-//    }
 }
