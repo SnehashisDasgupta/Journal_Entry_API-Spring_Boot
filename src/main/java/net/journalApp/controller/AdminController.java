@@ -27,7 +27,11 @@ public class AdminController {
 
     @PostMapping("/create-admin-user")
     public ResponseEntity<String> createAdminUser(@RequestBody User user) {
-        userService.saveAdmin(user);
-        return new ResponseEntity<>("Admin user created successfully", HttpStatus.CREATED);
+        try {
+            userService.saveAdmin(user);
+            return new ResponseEntity<>("Admin user created successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Admin user already exist", HttpStatus.BAD_REQUEST);
+        }
     }
 }
