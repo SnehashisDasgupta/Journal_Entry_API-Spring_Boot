@@ -1,5 +1,6 @@
 package net.journalApp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import net.journalApp.entity.JournalEntry;
 import net.journalApp.entity.User;
 import net.journalApp.repository.JournalEntryRepository;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class JournalEntryService {
 
     @Autowired
@@ -60,6 +62,7 @@ public class JournalEntryService {
                 journalEntryRepository.deleteById(id);
             }
         } catch (Exception e) {
+            log.error("Error in deleteById(Journal Entry Service): ", e);
             throw new RuntimeException("An error occurred in deleteById API: ",e);
         }
     }

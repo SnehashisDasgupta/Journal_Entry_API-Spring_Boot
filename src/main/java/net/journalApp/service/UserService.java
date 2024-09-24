@@ -1,5 +1,6 @@
 package net.journalApp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import net.journalApp.entity.User;
 import net.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
@@ -13,12 +14,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    // Use '@slf4j' instead of line below (same thing)
+//    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     // Implement user-related methods here
     public void saveAdmin(User user) {
@@ -36,12 +41,17 @@ public class UserService {
             userRepository.save(user);
             return true;
         } catch (Exception e) {
+            log.info("Error saving user of username {}: {}", user.getUsername(),e.getMessage()); // custom log
             return false;
         }
     }
 
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 
     public List<User> getAll() {
