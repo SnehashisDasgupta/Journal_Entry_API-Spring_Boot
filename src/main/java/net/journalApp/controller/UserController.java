@@ -26,7 +26,7 @@ public class UserController {
     private WeatherService weatherService;
 
     @PutMapping
-    public ResponseEntity<?> updateUser(@RequestBody User newUser) {
+    public ResponseEntity<String> updateUser(@RequestBody User newUser) {
         // fetch the username of the user from 'SecurityContextHolder' which stores the user details
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteUser() {
+    public ResponseEntity<String> deleteUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
@@ -55,10 +55,11 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        WeatherResponse weatherResponse = weatherService.getWeather("Kolkata");
+        String city = "Kolkata";
+        WeatherResponse weatherResponse = weatherService.getWeather(city);
         String greeting = "";
         if (weatherResponse != null) {
-            greeting = ", Weather feels like " + weatherResponse.getCurrent().getFeelslike() + " in";
+            greeting = ", Weather feels like " + weatherResponse.getCurrent().getFeelslike() + " in " + city;
         }
         return new ResponseEntity<>("Welcome " + username + greeting, HttpStatus.OK);
     }

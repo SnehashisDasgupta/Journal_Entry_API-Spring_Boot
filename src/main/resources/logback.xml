@@ -3,14 +3,19 @@
     <appender name="myConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{dd-MM-yy HH:mm:ss:SSS} [%thread] %-5level %logger{36} - %msg %n</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 
     <!-- File Appender -->
     <appender name="myFileAppender" class="ch.qos.logback.core.FileAppender">
-        <file>journalApp.log</file> <!-- Updated log file location -->
+
+        <file>D:/Project/journalApp/logs/journalApp.log</file> <!-- Log file location -->
+        <append>false</append> <!-- Overwrite the log file on every run -->
+
         <encoder>
             <pattern>%d{dd-MM-yy HH:mm:ss} [%thread] %-5level %logger{36} - %msg %n</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 
