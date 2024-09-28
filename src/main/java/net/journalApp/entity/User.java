@@ -24,6 +24,10 @@ public class User {
     private String username;
     @NonNull
     private String password;
+
+    private String email;
+    private boolean sentimentAnalysis;
+
     @DBRef //to create a reference of JournalEntry in users collection; used as 'Foreign Key'
     private List<JournalEntry> journalEntries = new ArrayList<>();
     private List<String> roles;
