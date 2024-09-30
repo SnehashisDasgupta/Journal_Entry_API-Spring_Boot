@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class EmailServiceTests {
+class EmailServiceTests {
 
     @Autowired
     private EmailService emailService;
@@ -13,7 +13,7 @@ public class EmailServiceTests {
     @Test
     void testSendMail() {
         emailService.sendEmail("dustbin732@gmail.com",
-                "Test email 1",
+                "Test email 2",
                 "Testing chal rhi hai");
     }
 }

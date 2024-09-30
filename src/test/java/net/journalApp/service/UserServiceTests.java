@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class UserServiceTests {
+class UserServiceTests {
     @Autowired
     private UserRepository userRepository;
 
@@ -20,7 +20,7 @@ public class UserServiceTests {
             "Harsh",
             "Ayush"
     })
-    public void testFindByUsername(String username){
+    void testFindByUsername(String username){
         User actualUser = userRepository.findByUsername(username);
         assertNotNull(actualUser);
         assertFalse(actualUser.getJournalEntries().isEmpty());//user's journal entries present? TRUE : FALSE

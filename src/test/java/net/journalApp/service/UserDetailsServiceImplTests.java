@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 
 //@Mock: Use when testing a small part of your code and don't need Spring.
 //@MockBean: Use when testing your Spring application but want to replace real parts (beans) with fakes.
-public class UserDetailsServiceImplTests {
+class UserDetailsServiceImplTests {
 
     // @InjectMocks: It is used in unit tests to automatically inject mock objects (created with @Mock) into the class being tested.
     @InjectMocks

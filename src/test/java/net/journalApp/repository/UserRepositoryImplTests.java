@@ -7,13 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest
-public class UserRepositoryImplTests {
+class UserRepositoryImplTests {
 
     @Autowired
     private UserRepositoryImpl userRepository;
 
     @Test
-    public void testSaveNewUser() {
+    void testSaveNewUser() {
         Assertions.assertNotNull(userRepository.getUserForSentimentAnalysis());
     }
 }
