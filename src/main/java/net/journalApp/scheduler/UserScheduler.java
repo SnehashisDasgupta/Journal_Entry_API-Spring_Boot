@@ -36,7 +36,7 @@ public class UserScheduler {
             List<JournalEntry> journalEntries = user.getJournalEntries();
             List<Sentiment> sentiments = journalEntries.stream()
                     .filter(entry -> entry.getDate().isAfter(LocalDateTime.now().minusDays(7))) //Filters the stream to include only those journal entries whose date is after 7 days before the current date and time.
-                    .map(entry -> entry.getSentiment())
+                    .map(JournalEntry::getSentiment)
                     .collect(Collectors.toList());
 
             // send the sentiment which comes max in the week
